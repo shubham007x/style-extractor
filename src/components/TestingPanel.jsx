@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { runTestCase, runAllTestCases } from '../features/testing/testingSlice';
+import { testImages } from '../data/testImages';
 
 const TestingPanel = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,10 @@ const TestingPanel = () => {
     if (accuracy >= 90) return 'text-green-600 bg-green-50';
     if (accuracy >= 70) return 'text-yellow-600 bg-yellow-50';
     return 'text-red-600 bg-red-50';
+  };
+
+  const handleImageClick = (imageUrl, imageName) => {
+    window.open(imageUrl, '_blank');
   };
 
   return (
@@ -72,8 +77,22 @@ const TestingPanel = () => {
                 
                 <p className="text-sm text-gray-600 mb-2">{testCase.description}</p>
                 
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-gray-500 mb-2">
                   {testCase.viewport.type} • {testCase.viewport.width}×{testCase.viewport.height}
+                </div>
+
+                {/* Test Image Thumbnail */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-gray-600">Test Image:</span>
+                  {testImages.find(img => img.id === testCase.id) && (
+                    <img
+                      src={testImages.find(img => img.id === testCase.id).url}
+                      alt={testCase.name}
+                      className="h-12 w-auto rounded cursor-pointer border border-gray-300 hover:border-blue-500 transition-colors"
+                      onClick={() => handleImageClick(testImages.find(img => img.id === testCase.id).url, testCase.name)}
+                      title={`Click to view ${testCase.name}`}
+                    />
+                  )}
                 </div>
 
                 {result && (
