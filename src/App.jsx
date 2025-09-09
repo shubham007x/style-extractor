@@ -6,7 +6,6 @@ import EditorPage from "./pages/EditorPage";
 function App() {
   const { currentImage } = useSelector((state) => state.images);
 
-  // Show editor if image is loaded, otherwise show upload page
   return currentImage ? <EditorPage /> : <UploadPage />;
 }
 
